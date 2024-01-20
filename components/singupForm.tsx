@@ -1,5 +1,29 @@
+"use client";
+
+import authService from "@/services/authService";
+import { useRouter } from "next/router";
+import { useState } from "react";
+
 export function SignupForm() {
-  const handleSignup = () => {};
+  const [isLoading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+
+  const router = useRouter();
+
+  const handleSignup = async () => {
+    setLoading(true);
+
+    try {
+      await authService.signup(email, name, password);
+      router.push("/signup/success");
+    } catch (err) {
+      router.push("/signup/failed");
+    }
+
+    setLoading(false);
+  };
 
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
